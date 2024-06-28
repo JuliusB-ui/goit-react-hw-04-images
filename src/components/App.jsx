@@ -1,10 +1,18 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { getAPI } from '../pixabay-api.js';
 import SearchBar from './SearchBar/SearchBar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Loader from './Loader/Loader';
 import Button from './Button/Button';
 
+const App = () => {
+  const [images, setImages] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [isEnd, setIsIend] = useState(false);
+};
 export class App extends Component {
   state = {
     images: [],
@@ -33,7 +41,6 @@ export class App extends Component {
 
     try {
       const response = await getAPI(searchQuery, currentPage);
-      console.log(response);
       const { totalHits, hits } = response;
 
       this.setState(prevState => ({
