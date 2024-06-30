@@ -1,41 +1,43 @@
 // src/components/ImageGalleryItem/ImageGalleryItem.js
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Modal from '../Modal/Modal';
 import styles from './ImageGalleryItem.module.css';
+import { useToggle } from 'components/hooks/useToggle';
 
-class ImageGalleryItem extends Component {
-  static propTypes = {
-    image: PropTypes.shape({
-      webformatURL: PropTypes.string.isRequired,
-      largeImageURL: PropTypes.string.isRequired,
-      tags: PropTypes.string,
-    }).isRequired,
-  };
+const ImageGalleryItem = ({ image }) => {
+  const { showModal, toggle } = useToggle();
+  const { webformatURL, largeImageURL, tags } = image;
 
-  state = {
-    showModal: false,
-  };
+  useEffect(() => {
+    const gallery = document.querySelector('.js-gallery');
+    if (!gallery) return;
 
-  toggleModal = () => {
-    this.setState(prevState => ({
-      showModal: !prevState.showModal,
-    }));
-  };
+    if (showModal) {
+      console.log('Modal is now shown');
+      gallery.style.pointerEvents = 'none';
+    } else {
+      console.log('Modal is now hidden');
+      gallery.style.pointerEvents = 'auto';
+    }
+  }, [showModal]);
 
-  render() {
-    const { webformatURL, largeImageURL, tags } = this.props.image;
-    const { showModal } = this.state;
+  return (
+    <li className={styles.galleryItem} onClick={toggle}>
+      <img src={webformatURL} alt={tags} className={styles.galleryImg} />
+      {showModal && (
+        <Modal image={largeImageURL} tags={tags} onClose={toggle} />
+      )}
+    </li>
+  );
+};
 
-    return (
-      <li className={styles.galleryItem} onClick={this.toggleModal}>
-        <img src={webformatURL} alt={tags} className={styles.galleryImg} />
-        {showModal && (
-          <Modal image={largeImageURL} tags={tags} onClose={this.toggleModal} />
-        )}
-      </li>
-    );
-  }
-}
+ImageGalleryItem.propTypes = {
+  image: PropTypes.shape({
+    webformatURL: PropTypes.string.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
+    tags: PropTypes.string,
+  }).isRequired,
+};
 
 export default ImageGalleryItem;

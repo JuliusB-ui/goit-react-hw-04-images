@@ -1,18 +1,60 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { getAPI } from '../pixabay-api.js';
 import SearchBar from './SearchBar/SearchBar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Loader from './Loader/Loader';
 import Button from './Button/Button';
+import { Component } from 'react';
 
-const App = () => {
-  const [images, setImages] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [isEnd, setIsIend] = useState(false);
-};
+// const App = () => {
+//   const [images, setImages] = useState([]);
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const [searchQuery, setSearchQuery] = useState('');
+//   const [isLoading, setisLoading] = useState(false);
+//   const [isError, setisError] = useState(false);
+//   const [isEnd, setIsEnd] = useState(false);
+
+//   useEffect(() = {
+//     const fetchImages = async () => {
+//       if (!searchQuery) return;
+
+//       setisLoading(true);
+//       setisError(false);
+
+//       try {
+//         const response = await getAPI(searchQuery, currentPage);
+//         const { totalHits, hits } = response;
+
+//         this.setState(prevState => ({
+//           images: currentPage === 1 ? hits : [...prevState.images, ...hits],
+//           isLoading: false,
+//           isEnd: prevState.images.length + hits.length >= totalHits,
+//         }));
+
+//         if (hits.length === 0) {
+//           alert('No images found. Try a different search.');
+//           return;
+//         }
+//       } catch (error) {
+//         this.setState({ isLoading: false, isError: true });
+//         alert(`An error occurred while fetching data: ${error}`);
+//       }
+//     }
+//   }, [])
+
+//   return (
+//     <div>
+//         <SearchBar onSubmit={handleSearchSubmit} />
+//         <ImageGallery images={images} />
+//         {isLoading && <Loader />}
+//         {!isLoading && !isError && images.length > 0 && !isEnd && (
+//           <Button onClick={handleLoadMore} />
+//         )}
+//         {isError && <p>Something went wrong. Please try again later.</p>}
+//       </div>
+//   )
+// };
+
 export class App extends Component {
   state = {
     images: [],
