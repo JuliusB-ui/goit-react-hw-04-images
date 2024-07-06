@@ -27,25 +27,27 @@ export const App = () => {
         const response = await getAPI(searchQuery, currentPage);
         const { totalHits, hits } = response;
         
-        setImages(currentPage===1 ? hits : [...images, ...hits]);
-        setIsEnd(images.length+hits.length >= totalHits);
+        setImages(prevState => [...prevState, ...hits]);
+        setIsEnd(currentPage * 12 >= totalHits);
 
         if(hits.length===0) {
           toast.error("No images found. Try a different search.");
+          
           return;
         }
         
       } catch (error) {
         setisError(true);
         toast.error(`An error occurred while fetching data: ${error}`)
+        return;
       }
       finally {
-        setisLoading(false)
+        setisLoading(false);
       }
     }
 
     fetchImages();
-  },[searchQuery,currentPage,images])
+  },[searchQuery,currentPage])
   
   const handleSearchSubmit =(query) => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -69,15 +71,16 @@ export const App = () => {
   }
     
   const handleLoadMore = () => {
-    if (!isEnd) {
+  if (isEnd) {
+    toast(`You've reached the end of the search results.`);
+  }
+  else {
       setCurrentPage(currentPage+1);
-    } else {
-      toast("You've reached the end of the search results.");
     }
   }
 
   return (
-    <div>
+    <>
       <Toaster/>
       <SearchBar onSubmit={handleSearchSubmit} />
       <ImageGallery images={images} />
@@ -86,6 +89,6 @@ export const App = () => {
         <Button onClick={handleLoadMore} />
       )}
       {isError && <p>Something went wrong. Please try again later.</p>}
-    </div>
-  );
+    </>
+  )
 }
