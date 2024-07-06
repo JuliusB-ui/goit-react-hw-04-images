@@ -5,7 +5,6 @@ import ImageGallery from './ImageGallery/ImageGallery';
 import Loader from './Loader/Loader';
 import Button from './Button/Button';
 import toast, { Toaster } from 'react-hot-toast';
-import PropTypes from 'prop-types';
 
 
 export const App = () => {
@@ -46,7 +45,7 @@ export const App = () => {
     }
 
     fetchImages();
-  },[searchQuery,currentPage])
+  },[searchQuery,currentPage,images])
   
   const handleSearchSubmit =(query) => {
     const normalizedQuery = query.trim().toLowerCase();
